@@ -1,10 +1,12 @@
-﻿using System.Text;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics.Contracts;
+using System.Text;
 
 namespace NsDataTest
-{
+{    
     internal class Journey
     {
-        public Journey(
+        private Journey(
             uint id, 
             List<TrainJourney> trainJourneys, 
             FootNote footNote, 
@@ -24,6 +26,11 @@ namespace NsDataTest
             Stops = stops;
         }
 
+        public string GenerateItinerary()
+        {
+            return GenerateItinerary(this);
+        }
+
         public uint Id { get; private set; }
         public List<TrainJourney> TrainJourneys { get; private set; }
         public FootNote FootNote { get; private set; }
@@ -31,8 +38,7 @@ namespace NsDataTest
         public ushort FootNoteStopStop { get; private set; }
         public List<TransitType> TransitTypes { get; private set; }
         public List<JourneyAttribute> Attributes { get; private set; }
-        public List<Stop> Stops { get; private set; }
-
+        public List<Stop> Stops { get; private set; } 
 
         private readonly static Dictionary<uint, Journey> _Journeys 
             = new Dictionary<uint, Journey>();
@@ -289,8 +295,7 @@ namespace NsDataTest
                     if (onDate != null)
                         if (j.Value.FootNote.Validity[onDate.Value])
                             _foundJourneys.Add(j.Value);
-                        else
-                            ;
+                        else { }
                     else
                         _foundJourneys.Add(j.Value);
             }
@@ -316,7 +321,7 @@ namespace NsDataTest
                                 if (onDate != null)
                                     if (j.Value.FootNote.Validity[onDate.Value])
                                         _foundDepartures.Add(s, j.Value);
-                                    else;
+                                    else { }
                                 else
                                     _foundDepartures.Add(s, j.Value);
                             break;
@@ -325,7 +330,7 @@ namespace NsDataTest
                                 if (onDate != null)
                                     if (j.Value.FootNote.Validity[onDate.Value])
                                         _foundDepartures.Add(s, j.Value);
-                                    else ;
+                                    else { }
                                 else
                                     _foundDepartures.Add(s, j.Value);
                             break;
@@ -337,6 +342,97 @@ namespace NsDataTest
             if (_foundDepartures.Count > 1)
                 return true;
             return false;
+        }
+
+        public static string GenerateItinerary(uint id)
+        {
+            if (id <= 0 && id <= _Journeys.Count) return $"Journey with id {id} does not exist, id has to be between 0 and {_Journeys.Count}";
+
+            return GenerateItinerary(GetById(id));
+        }
+        public static string GenerateItinerary (Journey journey)
+        {
+            string s = $"\nJourney for {journey.TrainJourneys[0].Company.Name.Trim()}: " +
+                $"{journey.TransitTypes[0].Description} [{journey.TransitTypes[0].Code}]\n";
+
+            if (journey.Attributes.Count > 0)
+            {
+                s += "This journey has the following attributes: ";
+                foreach (JourneyAttribute attribute in journey.Attributes)
+                    s += $"From {journey.Stops[attribute.StartStop].Station?.FullName} " +
+                        $"until {journey.Stops[attribute.EndStop].Station?.FullName}: \n" +
+                        $" > {attribute.Attribute.Description}";
+                s += "\n";
+            }
+
+            foreach (Stop stop in journey.Stops)
+            {
+                if (stop is not FirstStop and not TracklessFirstStop)
+                    s += "\n|";
+                switch (stop)
+                {
+                    case FirstStop _stop:
+                        // Example output: / 13:34 - Dordrecht (track: 2)
+                        s += $"\n / {_stop.DepartureTime} - {_stop.Station?.FullName} " +
+                            $"(track: {_stop.DepartureTrack.TrackString})";
+                        break;
+                    case TracklessFirstStop _stop:
+                        // Example output: 
+                        //  / 15:35 - Hertogenbosch ('s) (track unavailable)
+                        s += $"\n / {_stop.DepartureTime} - {_stop.Station?.FullName} " +
+                            $"(track unavailable)";
+                        break;
+                    case ShortStop _stop:
+                        // Example output:
+                        //  > 13:56 - Schiedam Centrum (track: 5)
+                        s += $"\n > {_stop.ArrivalAndDepartureWithinMinuteOf} - {_stop.Station?.FullName} " +
+                            $"(track: {_stop.DepartureTrack.TrackString})";
+                        break;
+                    case TracklessShortStop _stop:
+                        s += $"\n > {_stop.ArrivalAndDepartureWithinMinuteOf} - {_stop.Station?.FullName} " +
+                            $"(track unavailable)";
+                        break;
+                    case PassingStop _stop:
+                        // Example output:
+                        //  | Zwijndrecht
+                        s += $"\n| {_stop.Station?.FullName}";
+                        break;
+                    case RegularStop _stop:
+                        // Example output:
+                        // \ 13:48 (track: 8
+                        //  | Rotterdam Centraal
+                        // / 13:51 (track: 8)
+                        s += $"\n \\ {_stop.ArrivalTime} (track: {_stop.ArrivalTrack.TrackString})" +
+                            $"\n  | {_stop.Station?.FullName} " +
+                            $"\n / {_stop.DepartureTime} (track: {_stop.DepartureTrack.TrackString})";
+                        break;
+                    case TracklessRegularStop _stop:
+                        // Example output:
+                        // \ 16:15 (track unavailable)
+                        //  | Tilburg
+                        // / 16:15 (track unavailable)
+                        s += $"\n \\ {_stop.ArrivalTime} (track unavailable) " +
+                            $"\n  | {_stop.Station?.FullName} " +
+                            $"\n / {_stop.DepartureTime} (track unavailable)";
+                        break;
+                    case TerminusStop _stop:
+                        // Example output
+                        //  \ 15:39 - Lelystad Centrum (track: 2)
+                        s += $"\n \\ {_stop.ArrivalTime} - {_stop.Station?.FullName} " +
+                            $"(track: {_stop.ArrivalTrack.TrackString})";
+                        break;
+                    case TracklessTerminusStop _stop:
+                        // Example output
+                        //  \ 16:52 - Breda (track unavailable)
+                        s += $"\n \\ {_stop.ArrivalTime} - {_stop.Station?.FullName} " +
+                            $"(track unavailable)";
+                        break;
+                }
+                if (stop is not TerminusStop and not TracklessTerminusStop)
+                    s += "\n|";
+            }
+
+            return s;
         }
     }
 }

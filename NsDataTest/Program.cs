@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System.Diagnostics.Tracing;
+using System.Globalization;
 
 namespace NsDataTest
 {
@@ -20,17 +21,37 @@ namespace NsDataTest
                     Console.WriteLine("Data not yet initialized. \nTo start initiating the program press any key.");
                     Console.ReadKey();
                     Console.WriteLine("\nInitiating timetable data...");
-                    System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(Journey).TypeHandle);
+                    try
+                    {
+                        System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(Journey).TypeHandle);
+                    }
+                    catch (TypeInitializationException ex) {
+                        if (ex.InnerException == null) throw ex;
+                        while (true)
+                            if (ex.InnerException is FileNotFoundException)
+                            {
+                                Console.WriteLine("\nDataset not found!\n" +
+                                    "Get the dataset from: https://reisinformatiegroep.nl/ndovloket/Data/ShowDataCollection/2 \n" +
+                                    $"Create a folder called \"Dataset\" in the following directory: {Environment.CurrentDirectory} \n" +
+                                    "Unpack the data and place it in the newly created folder and restart the program." +
+                                    $"located in " +
+                                    $"\n Press any key to close the program.");
+                                Console.ReadKey(true);
+                                return;
+                            }                                
+                            else if (ex.InnerException is TypeInitializationException)
+                                continue;
+                            else
+                                throw;
+                    }
+
                     Console.Clear();
                     Console.WriteLine($"Data initialized!\n");
 
                     dataInitiated = true;
                 }
 
-                showForDate = DateTime.Now.Date.CompareTo(
-                    Publication.ValidityEndDate.ToDateTime(new TimeOnly())) > 1 
-                    ? 
-                    DateOnly.FromDateTime(DateTime.Now) : Publication.ValidityEndDate;
+                showForDate = DateTime.Now.Date.CompareTo(Publication.ValidityEndDate.ToDateTime(new TimeOnly())) > 1 ? DateOnly.FromDateTime(DateTime.Now) : Publication.ValidityEndDate;
 
                 while (true)
                 {
@@ -38,7 +59,7 @@ namespace NsDataTest
                         "This program allows you to search through the timetable of the Dutch national railwyas (NS).");
                     Console.WriteLine($"Loaded timetable valid from: {Publication.ValidityStartDate}, until {Publication.ValidityEndDate}.");
                     Console.WriteLine("\nInteract with the timetable: (press key to navigate to the option next to it)" +
-                        "\nTo return to this top menu, press [Ctrl + C]." +
+                        "\nTo return to this top menu, press [Ctrl + C].\n" +
                         "\n1: Search routes by Id." +
                         "\n2: Find departures by time." +
                         "\n3: Simulate timetable" +
@@ -78,88 +99,10 @@ namespace NsDataTest
                     $"\nEnter the Id of the route: (integer from 1 to {Journey.AllJourneys.Count})");
                 try
                 {
-                    Journey journey = Journey.GetById(uint.Parse(Console.ReadLine()));
-                    Console.WriteLine(
-                        $"\nJourney for {journey.TrainJourneys[0].Company.Name.Trim()}: " +
-                        $"{journey.TransitTypes[0].Description} [{journey.TransitTypes[0].Code}]\n");
-                    if (journey.Attributes.Count > 0)
-                    {
-                        Console.WriteLine("This journey has the following attributes: ");
-                        foreach (JourneyAttribute attribute in journey.Attributes) 
-                            Console.WriteLine($"From {journey.Stops[attribute.StartStop].Station?.FullName} " +
-                                $"until {journey.Stops[attribute.EndStop].Station?.FullName}: \n" +
-                                $" > {attribute.Attribute.Description}");
-                        Console.WriteLine();
-                    }
-                    foreach (Stop stop in journey.Stops) 
-                    {
-                        if (stop is not FirstStop and not TracklessFirstStop)
-                            Console.WriteLine("|");
-                        switch (stop)
-                        {
-                            case FirstStop _stop:
-                                // Example output: / 13:34 - Dordrecht (track: 2)
-                                Console.WriteLine($" / {_stop.DepartureTime} - {_stop.Station?.FullName} " +
-                                    $"(track: {_stop.DepartureTrack.TrackString})"); 
-                                break;
-                            case TracklessFirstStop _stop:
-                                // Example output: 
-                                //  / 15:35 - Hertogenbosch ('s) (track unavailable)
-                                Console.WriteLine($" / {_stop.DepartureTime} - {_stop.Station?.FullName} " +
-                                    $"(track unavailable)"); 
-                                break;
-                            case ShortStop _stop:
-                                // Example output:
-                                //  > 13:56 - Schiedam Centrum (track: 5)
-                                Console.WriteLine($" > {_stop.ArrivalAndDepartureWithinMinuteOf} - {_stop.Station?.FullName} " +
-                                    $"(track: {_stop.DepartureTrack.TrackString})"); 
-                                break;
-                            case TracklessShortStop _stop: 
-                                Console.WriteLine($" > {_stop.ArrivalAndDepartureWithinMinuteOf} - {_stop.Station?.FullName} " +
-                                    $"(track unavailable)"); 
-                                break;
-                            case PassingStop _stop:
-                                // Example output:
-                                //  | Zwijndrecht
-                                Console.WriteLine($"| {_stop.Station?.FullName }"); 
-                                break;
-                            case RegularStop _stop:
-                                // Example output:
-                                // \ 13:48 (track: 8
-                                //  | Rotterdam Centraal
-                                // / 13:51 (track: 8)
-                                Console.WriteLine($" \\ {_stop.ArrivalTime} (track: {_stop.ArrivalTrack.TrackString})" +
-                                    $"\n  | {_stop.Station?.FullName} " +
-                                    $"\n / {_stop.DepartureTime} (track: {_stop.DepartureTrack.TrackString})"); 
-                                break;
-                            case TracklessRegularStop _stop:
-                                // Example output:
-                                // \ 16:15 (track unavailable)
-                                //  | Tilburg
-                                // / 16:15 (track unavailable)
-                                Console.WriteLine($" \\ {_stop.ArrivalTime} (track unavailable) " +
-                                    $"\n  | {_stop.Station?.FullName} " +
-                                    $"\n / {_stop.DepartureTime} (track unavailable)"); 
-                                break;
-                            case TerminusStop _stop:
-                                // Example output
-                                //  \ 15:39 - Lelystad Centrum (track: 2)
-                                Console.WriteLine($" \\ {_stop.ArrivalTime} - {_stop.Station?.FullName} " +
-                                    $"(track: {_stop.ArrivalTrack.TrackString})"); 
-                                break;
-                            case TracklessTerminusStop _stop:
-                                // Example output
-                                //  \ 16:52 - Breda (track unavailable)
-                                Console.WriteLine($" \\ {_stop.ArrivalTime} - {_stop.Station?.FullName} " +
-                                    $"(track unavailable)");
-                                break;
-                        }
-                        if (stop is not TerminusStop and not TracklessTerminusStop)
-                            Console.WriteLine("|");
-                    }
+                    Console.WriteLine(Journey.GenerateItinerary(uint.Parse(Console.ReadLine() ?? throw new Exception("Input was empty"))));
                 }
-                catch (FormatException ex) { Console.WriteLine(ex.Data[0]); }
-                catch (Exception ex) { Console.WriteLine(ex.Message); return; }
+                catch (FormatException ex) { Console.WriteLine(ex.Message); }
+                catch (Exception ex) { Console.WriteLine(ex.Message); }
 
                 Console.WriteLine("\nPress any key to continue...");
                 Console.ReadKey();
@@ -183,7 +126,7 @@ namespace NsDataTest
                 try
                 {
                     if (Journey.TryGetJourneysFromDepartureTime(
-                                    TimeOnly.ParseExact(Console.ReadLine(), "HH:mm", CultureInfo.InvariantCulture), 
+                                    TimeOnly.ParseExact(Console.ReadLine() ?? throw new Exception("Input was empty"), "HH:mm", CultureInfo.InvariantCulture), 
                                     out var l, 
                                     DateOnly.FromDateTime(DateTime.Now))
                         )
