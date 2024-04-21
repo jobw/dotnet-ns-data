@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Globalization;
 
 namespace NsDataTest
 {
@@ -188,7 +182,6 @@ namespace NsDataTest
         public Track ArrivalTrack { get; private set; }
         public Track DepartureTrack { get; private set; }
         public FootNote TrackFootNote { get; private set; }
-
     }
 
     internal class TracklessTerminusStop : Stop
@@ -206,7 +199,5 @@ namespace NsDataTest
         }
 
         public TimeOnly ArrivalTime { get; private set; }
-    }
-
-    
+    }    
 }

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace NsDataTest
+﻿namespace NsDataTest
 {
     internal class TrainJourney
     {
@@ -23,6 +17,5 @@ namespace NsDataTest
         public string LineNmbr { get; private set; }
         public ushort StartStopNmbr { get; private set; }
         public ushort EndStopNmbr { get; private set;}
-
     }
 }

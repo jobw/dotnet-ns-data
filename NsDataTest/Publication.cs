@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
+﻿using System.Globalization;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace NsDataTest
 {
@@ -26,8 +22,7 @@ namespace NsDataTest
                     Description = attributes[4].Trim();
                 }
                 else
-                    throw new Exception("File was not able to be handled correctly");
-                
+                    throw new Exception("File was not able to be handled correctly");                
             }
         }
 

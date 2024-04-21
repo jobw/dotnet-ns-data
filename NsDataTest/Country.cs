@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text;
 
 namespace NsDataTest
 {
@@ -19,7 +15,8 @@ namespace NsDataTest
         public bool IsDomestic { get; private set; }
         public string Name { get; private set; }
 
-        private readonly static Dictionary<string, Country> _Countries = new Dictionary<string, Country>();
+        private readonly static Dictionary<string, Country> _Countries 
+            = new Dictionary<string, Country>();
         static Country()
         {
             using (FileStream fs = File.OpenRead("Dataset/country.dat"))

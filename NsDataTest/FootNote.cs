@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text;
 
 namespace NsDataTest
 {
@@ -18,7 +13,9 @@ namespace NsDataTest
         public ushort Id { get; private set; }
         public Dictionary<DateOnly, bool> Validity { get; private set; }
 
-        private readonly static Dictionary<ushort, FootNote> _Footnotes = new Dictionary<ushort, FootNote>();
+
+        private readonly static Dictionary<ushort, FootNote> _Footnotes 
+            = new Dictionary<ushort, FootNote>();
         static FootNote()
         {
             using (FileStream fs = File.OpenRead("Dataset/footnote.dat"))
@@ -37,10 +34,13 @@ namespace NsDataTest
                         {
                             char[] validity_string = line.ToCharArray();
 
-                            Dictionary<DateOnly, bool> temp_validity = new Dictionary<DateOnly, bool>();
+                            Dictionary<DateOnly, bool> temp_validity 
+                                = new Dictionary<DateOnly, bool>();
                             for (int i = 0; i < validity_string.Length; i++) 
                             {
-                                temp_validity.Add(Publication.ValidityStartDate.AddDays(i), validity_string[i] == '1');
+                                temp_validity.Add(
+                                    Publication.ValidityStartDate.AddDays(i), 
+                                    validity_string[i] == '1');
                             }
 
                             _Footnotes.Add(

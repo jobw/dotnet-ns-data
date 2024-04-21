@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Security.Principal;
+﻿using System.Globalization;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace NsDataTest
 {
@@ -24,7 +19,6 @@ namespace NsDataTest
         public DateOnly EndDate { get; private set;}
 
         private readonly static Dictionary<ushort, Timezone> _Timezones = new Dictionary<ushort, Timezone>();
-
         static Timezone()
         {
             using (FileStream fs = File.OpenRead("Dataset/timezone.dat"))
