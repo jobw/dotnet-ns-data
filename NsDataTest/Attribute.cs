@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text;
 
 namespace NsDataTest
 {
@@ -19,7 +15,8 @@ namespace NsDataTest
         public ushort HandlingCode { get; private set; }
         public string Description { get; private set; }
 
-        private readonly static Dictionary<string, Attribute> _Attributes = new Dictionary<string, Attribute>();
+        private readonly static Dictionary<string, Attribute> _Attributes 
+            = new Dictionary<string, Attribute>();
         static Attribute()
         {
             using (FileStream fs = File.OpenRead("Dataset/trnsattr.dat"))
