@@ -1,0 +1,172 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Dataset\attributesonstation.dat" />
+    <None Remove="Dataset\changes.dat" />
+    <None Remove="Dataset\company.dat" />
+    <None Remove="Dataset\connmode.dat" />
+    <None Remove="Dataset\contconn.dat" />
+    <None Remove="Dataset\country.dat" />
+    <None Remove="Dataset\delivery.dat" />
+    <None Remove="Dataset\error.tmp" />
+    <None Remove="Dataset\ff_changes_debuginfo" />
+    <None Remove="Dataset\ff_timetbls_spiekbest" />
+    <None Remove="Dataset\footnote.dat" />
+    <None Remove="Dataset\gvk.dat" />
+    <None Remove="Dataset\halte.tst" />
+    <None Remove="Dataset\hertz.dat" />
+    <None Remove="Dataset\iff_config.cfg" />
+    <None Remove="Dataset\kilonetnew.dat" />
+    <None Remove="Dataset\kilonet_demo.dat" />
+    <None Remove="Dataset\language.dat" />
+    <None Remove="Dataset\ns.ttx" />
+    <None Remove="Dataset\ns.ttx.characterset_input" />
+    <None Remove="Dataset\nsrichting.dat" />
+    <None Remove="Dataset\richting.dat" />
+    <None Remove="Dataset\srvcdest.dat" />
+    <None Remove="Dataset\statconn.dat" />
+    <None Remove="Dataset\stationattributes.dat" />
+    <None Remove="Dataset\stations.dat" />
+    <None Remove="Dataset\synonym.dat" />
+    <None Remove="Dataset\tariefnet.dat" />
+    <None Remove="Dataset\timetbls.dat" />
+    <None Remove="Dataset\timetbls_new.dat" />
+    <None Remove="Dataset\timezone.dat" />
+    <None Remove="Dataset\trnsaqst.dat" />
+    <None Remove="Dataset\trnsattr.dat" />
+    <None Remove="Dataset\trnsmode.dat" />
+    <None Remove="Dataset\trnsmqst.dat" />
+    <None Remove="Dataset\tweede_klas.dat" />
+    <None Remove="Dataset\virtualplatforms.dat" />
+    <None Remove="Dataset\xchanges.dat" />
+    <None Remove="Dataset\xfootnote.dat" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Dataset\attributesonstation.dat">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dataset\changes.dat">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dataset\company.dat">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dataset\connmode.dat">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dataset\contconn.dat">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dataset\country.dat">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dataset\delivery.dat">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dataset\error.tmp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dataset\ff_changes_debuginfo">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dataset\ff_timetbls_spiekbest">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dataset\footnote.dat">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dataset\gvk.dat">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dataset\halte.tst">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dataset\hertz.dat">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dataset\iff_config.cfg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dataset\kilonetnew.dat">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dataset\kilonet_demo.dat">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dataset\language.dat">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dataset\ns.ttx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dataset\ns.ttx.characterset_input">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dataset\nsrichting.dat">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dataset\richting.dat">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dataset\srvcdest.dat">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dataset\statconn.dat">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dataset\stationattributes.dat">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dataset\stations.dat">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dataset\synonym.dat">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dataset\tariefnet.dat">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dataset\timetbls.dat">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dataset\timetbls_new.dat">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dataset\timezone.dat">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dataset\trnsaqst.dat">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dataset\trnsattr.dat">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dataset\trnsmode.dat">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dataset\trnsmqst.dat">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dataset\tweede_klas.dat">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dataset\virtualplatforms.dat">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dataset\xchanges.dat">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dataset\xfootnote.dat">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+</Project>
