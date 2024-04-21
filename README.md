@@ -1,4 +1,4 @@
-# Simple way to see NS timetable data writter in C#
+# Simple way to see NS timetable data written in C#
 
 A simple program that allows insight into and manipulation of the timetable of the Dutch national railways (NS). Code can be reused in different applications! Written as a fun side project. 
 
