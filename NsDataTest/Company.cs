@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text;
 
 namespace NsDataTest
 {
@@ -16,15 +12,14 @@ namespace NsDataTest
             Timezone = timezone;
         }
 
-
         public ushort Id { get; private set; }
         public string Code { get; private set; }
         public string Name { get; private set; }
         public ushort Timezone { get; private set; }
 
 
-        private readonly static Dictionary<ushort, Company> _Comanies = new Dictionary<ushort, Company>();
-
+        private readonly static Dictionary<ushort, Company> _Comanies 
+            = new Dictionary<ushort, Company>();
         static Company() 
         {
             using (FileStream fs = File.OpenRead("Dataset/company.dat"))

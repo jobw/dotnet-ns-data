@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace NsDataTest
+﻿namespace NsDataTest
 {
     internal class JourneyAttribute
     {
@@ -19,7 +13,6 @@ namespace NsDataTest
         public Attribute Attribute { get; private set; }
         public ushort StartStop { get; private set; }
         public ushort EndStop { get; private set; }
-        public FootNote FootNote { get; private set; }
-        
+        public FootNote FootNote { get; private set; }        
     }
 }
